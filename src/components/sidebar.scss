@@ -1,0 +1,102 @@
+@import '../styles/global.scss';
+
+aside.Sidebar-container {
+    background-color: $color-bgsecundary;
+    color: $white;
+    width: 100%;
+    max-width: 200px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;    
+    
+    .usuario-sidebar {
+        background-image: url('../assets/cover.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        height: 17.5rem;
+
+        padding: 3rem 15px;
+        text-align: center;
+
+        img {
+            max-width: 9rem;
+            height: 100%;
+            max-height: 9rem;            
+            border-radius: 50%;
+            object-fit: cover;
+            // filter: drop-shadow(2px 3px 6px #000);
+            box-shadow: 2px 3px 6px #121212;
+        }
+        p {
+            font-weight: 600;
+            text-shadow: 2px 3px 6px #121212;
+        }
+    }
+
+    nav {
+        padding: 3rem 15px;
+        
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            li > a {
+                padding: 0.7rem 1rem;
+                border-radius: 7px;
+
+                display: flex;
+                gap: 0.7rem;
+                align-items: center;
+                
+                transition: all ease-in-out .4s;
+                &:hover {
+                    background-color: $color-bgprimary;
+                    color: $color-bgsecundary;
+                }
+                &.active {
+                    background-color: $white;
+                    color: $color-bgsecundary;
+                }
+
+                svg {
+                    // display: block;
+                    min-width: 20px;
+                    min-height: 20px;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 700px) {
+        max-width: fit-content;
+    }
+
+    @media screen and (max-width: 480px) {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        max-width: 100%; 
+        flex-direction: row;
+        
+        .usuario-sidebar {
+            display: none;
+        }
+
+        nav {
+            padding: 2rem 15px;
+            width: 100%;
+            
+            ul {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: .6rem;
+            }
+        }
+    }
+}

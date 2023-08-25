@@ -1,0 +1,62 @@
+@import '../../styles/global.scss';
+
+.Clientes-container {
+    background-color: $white;
+    border-radius: 7px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+
+    form {
+        width: 100%;
+        max-width: 750px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .input-div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-weight: 600;
+                margin-bottom: .5rem;
+            }
+            input {
+                background-color: $color-bgprimary;
+                font-size: 1.6rem;
+                padding: 0.5rem 0.8rem;
+                border-radius: 5px;
+            }
+        }
+
+        button {
+            background-color: $color-bgsecundary;
+            color: $gray-100;
+            width: 100%;
+            font-size: 1.6rem;
+            font-weight: 600;
+            padding: 0.5rem;
+            border-radius: 5px;
+
+            transition: all .4s ease-in-out;
+
+            &:hover {
+                filter: brightness(1.85);
+            }
+        }
+    }
+
+
+
+    /* Laptops baixa resolução */
+    @media screen and (max-width: 1024px) {
+        
+    }
+
+    /* Tablets */
+    @media screen and (max-width: 767px) {
+        
+    }
+}

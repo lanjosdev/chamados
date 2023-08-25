@@ -1,0 +1,111 @@
+@import '../../styles/global.scss';
+
+.Login-container {
+    @include spacing-lateral();
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    .grid {
+        max-width: 500px;
+    }
+
+    h1 {
+        background-color: $color-bgsecundary;
+        border-radius: 10px 10px 0 0;
+
+        text-align: center;
+        line-height: 0;
+        padding: 20px 120px;
+
+        img {
+            max-width: 170px;
+        }
+    }
+
+    .form-container {
+        background-color: #eaeaec;
+        padding: 2rem 3rem 2.5rem;
+        border-radius: 0 0 10px 10px;
+
+        p {
+            font-size: 3.2rem;
+            font-weight: 700;
+
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            .input-div {
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                svg {
+                    position: absolute;
+                    left: 2rem;
+                }
+                input {
+                    width: 100%;
+                    border-radius: 10px;
+                    padding: 1.5rem 2rem 1.5rem 4.5rem;
+                    font-size: 1.6rem;  
+                    
+                    transition: all .3s ease-in-out;
+                    &:hover {
+                        box-shadow: 0 0 0 1px black;
+                    } 
+                    &:focus {
+                        box-shadow: 0 0 0 2px $color-main, 0 0 0 5px #0069ea75;
+                    }    
+                }
+            }
+
+            .show-senha {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                
+                input {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
+
+            button {
+                @include style-btn(5.2rem, $color-main, 1.6rem, $white);
+                font-weight: 700;
+                border-radius: 10px;
+
+                &:hover {
+                    box-shadow: 0px 1px 7px 2px rgba(49, 49, 49, 0.295);
+                }
+            }
+        }
+    }
+
+    a {
+        margin-top: 1.5rem;
+        display: block;
+        text-align: center;
+        color: $color-main;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+
+    // RESPONSIVIDADE:
+    /* Mobile geral */
+    @media screen and (max-width: 480px) {
+        .form-container {
+            padding: 2rem 2rem 2.5rem;
+        }
+    }
+}

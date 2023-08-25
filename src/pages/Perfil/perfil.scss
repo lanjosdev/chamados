@@ -1,0 +1,130 @@
+@import '../../styles/global.scss';
+
+.Perfil-container {
+    background-color: $white;
+    border-radius: 7px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+
+    form {
+        width: 100%;
+        max-width: 750px;
+
+        .label-avatar {
+            width: 100%;
+            max-width: 180px;
+            height: 180px;
+            border-radius: 50%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            margin-bottom: 1em;
+
+            input {
+                display: none;
+            }
+
+            span {
+                z-index: 99;
+                position: absolute;
+                opacity: 0.7;
+                transition: all .4s ease-in-out;
+
+                svg {
+                    color: #fff;
+                    width: 25px;
+                    height: 25px;
+                }
+
+                
+                &:hover {
+                    opacity: 1;
+                    transform: scale(1.2);
+                }
+            } 
+
+            img {
+                max-width: 180px;
+                height: 100%;
+                max-height: 180px;            
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+
+        .bloco-inputs {
+            display: flex;
+            gap: 4rem;
+            margin-bottom: 1.5rem;
+
+            .input-div {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+
+                label {
+                    font-weight: 600;
+                    margin-bottom: .5rem;
+                }
+                input {
+                    background-color: $color-bgprimary;
+                    font-size: 1.6rem;
+                    padding: 0.5rem 0.8rem;
+                    border-radius: 5px;
+                }
+                input:disabled {
+                    cursor: not-allowed;
+                    opacity: .8;
+                }
+            }
+        }
+
+        button {
+            background-color: $color-bgsecundary;
+            color: $gray-100;
+            width: 100%;
+            font-size: 1.6rem;
+            font-weight: 600;
+            padding: 0.5rem;
+            border-radius: 5px;
+
+            transition: all .4s ease-in-out;
+
+            &:hover {
+                filter: brightness(1.85);
+            }
+        }
+    }
+
+
+
+    /* Laptops baixa resolução */
+    @media screen and (max-width: 1024px) {
+        form .bloco-inputs {
+            gap: 2rem;
+        }
+    }
+
+    /* Tablets */
+    @media screen and (max-width: 767px) {
+        form .bloco-inputs {
+            flex-direction: column;
+        }
+    }
+}
+
+.Perfil-container:last-child {
+    text-align: right;
+
+    > .logout-btn {
+        padding: 8px 20px;
+        border: 1px solid #121212;
+        background-color: transparent;
+        border-radius: 5px;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+} 
