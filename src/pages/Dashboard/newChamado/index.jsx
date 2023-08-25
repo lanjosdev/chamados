@@ -1,7 +1,8 @@
 // Funcionalidades / Libs:
 import { useState, useEffect, useContext } from 'react'
 import { db } from '../../../services/firebaseConnection';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, getDoc } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
 
 // Contexts:
 import { AuthContext } from '../../../contexts/authContext'
@@ -16,9 +17,10 @@ import { toast } from 'react-toastify';
 // import '../pages.scss';
 import './newchamado.scss';
 
-
+// colocar uma prop de Title (se não tiver deixa outro valor ou vazio)
 export default function NewChamado() {
   const { user } = useContext(AuthContext);
+  const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
 
@@ -29,9 +31,14 @@ export default function NewChamado() {
   const [status, setStatus] = useState('Aberto');
   const [complemento, setComplemento] = useState('');
 
+  const [idCliente, setIdCliente] = useState(false);
+
 
   useEffect(()=> {
     async function carregaClientes() {
+      if(id) {
+        setIdCliente(true);
+      }
       const listRef = collection(db, "clientes");
 
       await getDocs(listRef)
@@ -51,6 +58,10 @@ export default function NewChamado() {
         }
 
         setClientes(listaClientes);
+
+        if(id) {
+          carregaChamadoId(listaClientes);
+        }
       })
       .catch((erro)=> {
         console.log('ERRO AO BUSCAR CLIENTES!', erro);
@@ -59,12 +70,32 @@ export default function NewChamado() {
       setLoading(false);
     }
     carregaClientes();
-  }, []);
+  }, [id]);
+
+  async function carregaChamadoId(lista) {
+    const docRef = doc(db, "chamados", id);
+
+    await getDoc(docRef)
+    .then((snapshot)=> {
+      setAssunto(snapshot.data().asssunto);
+      setStatus(snapshot.data().status);
+      setComplemento(snapshot.data().complemento);
+
+      let index = lista.findIndex(item => item.id === snapshot.data().clienteId);
+      setClienteSelecionado(index);
+      setIdCliente(true);
+    })
+    .catch((erro)=> {
+      console.log('DEU ERRO!', erro);
+      setIdCliente(false); //usa navigate p/ dash?
+    })
+
+  }
 
   async function handleSubmitAddChamado(e) {
     e.preventDefault();
     
-    // Add chamado no DB
+    // Add/Create chamado no DB
     await addDoc(collection(db, "chamados"), {
       criado: new Date(),
       cliente: clientes[clienteSelecionado].nomeFantasia,
@@ -96,7 +127,7 @@ export default function NewChamado() {
       <Sidebar/>
 
       <div className="page-content">
-        <Title titulo="Novo chamado">
+        <Title titulo={idCliente ? 'Editar chamado' : 'Novo chamado'}>
             <FiPlusCircle size={25}/>
         </Title>
         

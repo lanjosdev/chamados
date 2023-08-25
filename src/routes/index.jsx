@@ -26,6 +26,9 @@ export default function AppRoutes() {
             <Route path="/dashboard/new-chamado" element={ 
                 <PrivateRouter> <NewChamado/> </PrivateRouter>  
             }/>
+            <Route path="/dashboard/edit-chamado/:id" element={ 
+                <PrivateRouter> <NewChamado/> </PrivateRouter>  
+            }/>
 
             {/* PERFIL */}
             <Route path="/perfil" element={

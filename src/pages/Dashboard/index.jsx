@@ -1,6 +1,6 @@
 // Funcionalidades / Libs:
 import { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { db } from '../../services/firebaseConnection';
 import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase/firestore';
 
@@ -25,6 +25,8 @@ export default function Dashboard() {
   const [lastDoc, setLastDoc] = useState();
   const [loadingMore, setLoadingMore] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(()=> {
     async function buscaChamados() {
@@ -147,7 +149,11 @@ export default function Dashboard() {
                           <button className="action" style={{ backgroundColor: '#3583f6' }}>
                             <FiSearch color='#FFF' size={17}/>
                           </button>
-                          <button className="action" style={{ backgroundColor: '#f6a935' }}>
+                          <button 
+                            className="action" 
+                            onClick={()=> navigate(`edit-chamado/${chamado.id}`)}
+                            style={{ backgroundColor: '#f6a935' }}
+                          >
                             <FiEdit2 color='#FFF' size={17}/>
                           </button>
                         </div>
