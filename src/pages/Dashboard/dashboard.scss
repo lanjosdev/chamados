@@ -73,6 +73,31 @@
     }
 
 
+    > p {
+        font-weight: 600;
+        text-align: center;
+
+        padding: 3rem 0;
+    }
+    .not-chamados {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+
+        padding: 1rem 0;
+
+        p {
+            font-weight: 600;
+        }
+
+        .new-chamado {
+            margin: 0;
+        }
+    }
+
+
     // button {
     //     background-color: $color-bgsecundary;
     //     color: $gray-100;
