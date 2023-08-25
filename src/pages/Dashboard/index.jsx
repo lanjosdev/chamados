@@ -22,12 +22,15 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [chamados, setChamados] = useState([]);
 
+  const [lastDoc, setLastDoc] = useState();
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(()=> {
     async function buscaChamados() {
       const collectionRef = collection(db, "chamados");
 
-      const q = query(collectionRef, orderBy('criado', 'desc'), limit(5));
+      const q = query(collectionRef, orderBy('criado', 'desc'), limit(5)); // vai pegar um maximo de 5 itens
       const querySnapshot = await getDocs(q);
 
       await updateChamados(querySnapshot);
@@ -41,7 +44,8 @@ export default function Dashboard() {
     const isChamadosEmpty = querySnap.size === 0; // true OR false
 
     if(isChamadosEmpty) {
-      console.log('NENHUM CHAMADO REGISTRADO!');
+      console.log('NÃO TEM MAIS CHAMADOS!');
+      setIsEmpty(true);
     } else {
       let listaChamados = [];
 
@@ -59,9 +63,23 @@ export default function Dashboard() {
         })
       })
 
-      setChamados(listaChamados);
-      // setChamados(chamados => [...chamados, ...listaChamados]);
+      let lastItem = querySnap.docs[querySnap.docs.length - 1] //pega o ultimo item da array
+
+      setLastDoc(lastItem);
+      // setChamados(listaChamados);
+      setChamados(chamados => [...chamados, ...listaChamados]);
     }
+
+    setLoadingMore(false);
+  }
+
+  async function handleBuscaMore() {
+    setLoadingMore(true);
+    const collectionRef = collection(db, "chamados");
+
+    const q = query(collectionRef, orderBy('criado', 'desc'), startAfter(lastDoc), limit(5)); // vai pegar um maximo de 5 itens a partir de tal doc (startAfter)
+    const querySnapshot = await getDocs(q);
+    await updateChamados(querySnapshot);
   }
 
   return(
@@ -105,6 +123,7 @@ export default function Dashboard() {
                     <th scope="col">Ações</th>
                   </tr>
                 </thead>
+
                 <tbody>
 
                   {chamados.map((chamado, index)=> (
@@ -112,7 +131,10 @@ export default function Dashboard() {
                       <td data-label="Cliente">{chamado.cliente}</td>
                       <td data-label="Assunto">{chamado.assunto}</td>
                       <td data-label="Status">
-                        <span className="badge" style={{backgroundColor: '#999'}}>
+                        <span 
+                          className="badge" 
+                          style={{backgroundColor: chamado.status === 'Aberto' ? '#5cb85c' : chamado.status === 'Atendido' ? '#999' : '#1a449e' }}
+                        >
                           {chamado.status}
                         </span>
                       </td>
@@ -137,6 +159,23 @@ export default function Dashboard() {
 
                 </tbody>
               </table>
+              
+              {!isEmpty && (
+                <>
+                  {loadingMore ? (
+                    <button className='btn-more clicado'>
+                      Buscando...
+                    </button>
+                  ) : (
+                    <button
+                      className='btn-more'
+                      onClick={handleBuscaMore}
+                    >
+                      Buscar mais
+                    </button>
+                  )}
+                </>
+              )}
               </>
             )
           )}
