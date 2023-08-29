@@ -1,0 +1,107 @@
+@import '../styles/global.scss';
+
+.Modal-container {
+    @include spacing-section();
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 99;
+
+    background-color: rgba(35, 35, 35, 0.6);
+    backdrop-filter: blur(2px);
+    animation: showModal .3s ease-in-out;
+
+    .modal {
+        background-color: $color-bgprimary;
+        position: relative;
+
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 5rem 2rem 4rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px 5px #000000cc;
+
+        animation: showModal .5s ease-in-out;
+
+        .btn-close {
+            background-color: #f65835;
+            color: $white;
+            border-radius: 5px;
+
+            position: absolute;
+            top: 15px;
+            right: 2rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: .2rem 1rem;
+
+            svg {
+                width: 2.5rem;
+                height: 2.5rem;
+
+                margin-right: .5rem;
+            }
+
+            span {
+                font-weight: 600;
+            }
+        }
+
+        .modal-content {
+            h2 {
+               margin-bottom: 1.5rem; 
+            }
+
+            .row {
+                margin-bottom: 1.2rem;
+
+                p {
+                    font-weight: bold;
+
+                    span {
+                        margin-left: .2rem;
+                        font-weight: normal;
+                    }
+
+                    .status {
+                        padding: .3rem .44rem;
+                        border-radius: 5px;
+                        color: $white;
+                    }
+                }
+
+                &.duplo {
+                    display: flex;
+                    gap: 2.5rem;
+                }
+
+                &:last-child {
+                    h3 {
+                        font-size: 1.6rem;
+                        margin-bottom: .2rem;
+                    }
+                    h3 + p {
+                        font-weight: normal;
+                        line-height: 150%;
+                    }
+                }
+            }
+        }
+    }
+
+
+    @keyframes showModal {
+        0% {
+            opacity: 0; 
+        }
+        100% {
+            opacity: 1; 
+        }
+    }    
+}

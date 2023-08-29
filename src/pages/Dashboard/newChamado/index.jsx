@@ -1,8 +1,8 @@
 // Funcionalidades / Libs:
 import { useState, useEffect, useContext } from 'react'
 import { db } from '../../../services/firebaseConnection';
-import { collection, getDocs, addDoc, doc, getDoc } from 'firebase/firestore';
-import { useParams } from 'react-router-dom';
+import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
 
 // Contexts:
 import { AuthContext } from '../../../contexts/authContext'
@@ -32,6 +32,9 @@ export default function NewChamado() {
   const [complemento, setComplemento] = useState('');
 
   const [idCliente, setIdCliente] = useState(false);
+  const [isEdit ,setIsEdit] = useState(false);
+
+  const navigate = useNavigate();
 
 
   useEffect(()=> {
@@ -71,6 +74,13 @@ export default function NewChamado() {
     }
     carregaClientes();
   }, [id]);
+
+  // useEffect(()=> {
+  //   function liberaEdit() {
+  //     setIsEdit(true);
+  //   }
+  //   liberaEdit();
+  // }, [clienteSelecionado, assunto, status, complemento]);
 
   async function carregaChamadoId(lista) {
     const docRef = doc(db, "chamados", id);
@@ -119,6 +129,37 @@ export default function NewChamado() {
     })
   }
 
+  async function handleSubmitEditChamado(e) {
+    e.preventDefault();
+
+    //if (compare) nenhum dado foi modificado > return
+
+    // Edit/Update chamado no DB
+    const docRef = doc(db, "chamados", id);
+
+    await updateDoc(docRef, {
+      cliente: clientes[clienteSelecionado].nomeFantasia,
+      clienteId: clientes[clienteSelecionado].id,
+      asssunto: assunto,
+      status: status,
+      complemento: complemento,
+      userId: user.uid
+    })
+    .then(()=> {
+      toast.success('Chamado Atualizado!');
+
+      setClienteSelecionado('');
+      // setAssunto('');
+      // setStatus('Aberto');
+      setComplemento('');
+      navigate('/dashboard');
+    })
+    .catch((erro)=> {
+      toast.error('Erro ao editar chamado! Tente mais tarde.');
+      console.log(erro);
+    })
+  }
+
 
 
   return(
@@ -133,7 +174,7 @@ export default function NewChamado() {
         
         <div className="Newchamado-container">
 
-          <form onSubmit={handleSubmitAddChamado}>
+          <form onSubmit={idCliente ? handleSubmitEditChamado : handleSubmitAddChamado}>
               <div className="input-div">
                   <label>Cliente</label>
                   {
@@ -229,7 +270,11 @@ export default function NewChamado() {
                 ></textarea>
               </div>
               
-              <button type='submit'>Registrar</button>
+              <button 
+                type='submit'
+                // melhor classe css
+                // disabled={!isEdit}
+              >{idCliente ? 'Editar' : 'Registrar'}</button>
           </form>
 
         </div>

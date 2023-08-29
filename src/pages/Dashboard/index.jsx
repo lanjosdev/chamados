@@ -10,6 +10,7 @@ import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase
 // Components:
 import { Sidebar } from '../../components/Sidebar';
 import { Title } from '../../components/Title';
+import { Modal } from '../../components/Modal';
 import { FiPlus, FiMessageSquare, FiSearch, FiEdit2 } from 'react-icons/fi';
 import { format } from 'date-fns';
 
@@ -25,6 +26,9 @@ export default function Dashboard() {
   const [lastDoc, setLastDoc] = useState();
   const [loadingMore, setLoadingMore] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [detailsChamado, setDetailsChamado] = useState();
 
   const navigate = useNavigate();
 
@@ -82,6 +86,12 @@ export default function Dashboard() {
     const q = query(collectionRef, orderBy('criado', 'desc'), startAfter(lastDoc), limit(5)); // vai pegar um maximo de 5 itens a partir de tal doc (startAfter)
     const querySnapshot = await getDocs(q);
     await updateChamados(querySnapshot);
+  }
+
+  function callModal(chamado) {
+    setDetailsChamado(chamado);
+
+    setShowModal(true);
   }
 
   return(
@@ -146,7 +156,11 @@ export default function Dashboard() {
 
                       <td data-label="Ações">
                         <div className="actions">
-                          <button className="action" style={{ backgroundColor: '#3583f6' }}>
+                          <button 
+                            className="action" 
+                            style={{ backgroundColor: '#3583f6' }}
+                            onClick={()=> callModal(chamado)}
+                          >
                             <FiSearch color='#FFF' size={17}/>
                           </button>
                           <button 
@@ -188,6 +202,11 @@ export default function Dashboard() {
       
         </div>
       </div>
+
+      {showModal && <Modal 
+                      detalhes={detailsChamado} 
+                      closeModal={()=> setShowModal(false)} 
+                    />}      
       
     </main>
   )
